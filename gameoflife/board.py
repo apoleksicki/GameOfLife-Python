@@ -16,9 +16,9 @@ class Board(object):
         x, y = point
         return self.board[x][y]
     
-    def _generateNewCell(self, point, board):
-        cell = self._getCell(point) 
-        aliveNeighbors = reduce(lambda x,y: x + y, map(lambda point: self._getCell(point), self._generateNeighborIndex(point)))
+    def _generateNewCell(self, coord, board):
+        cell = self._getCell(coord) 
+        aliveNeighbors = reduce(lambda x,y: x + y, map(lambda point: self._getCell(point), self._generateNeighborIndex(coord)))
         
         if cell == Board.DEAD:
             if aliveNeighbors == 3:
@@ -32,7 +32,7 @@ class Board(object):
             
         
     
-    def _generateNeighborIndex(self, point):
+    def _generateNeighborCoords(self, point):
         x, y = point
         allNeighbors = []
         allNeighbors.append((x - 1, y - 1))
