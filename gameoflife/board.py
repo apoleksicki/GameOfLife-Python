@@ -43,6 +43,22 @@ def generateNeighborIndex(point, board):
     allNeighbors.append((x + 1, y))
     allNeighbors.append((x + 1, y + 1))
     return [(x, y) for x, y in allNeighbors if x >= 0 and x < len(board) and y >= 0 and y < len(board[0])]
+
+def generateNewBoard(board):
+    result = []
+    for x in range(len(board)):
+        result.append([])
+        for y in range(len(board[0])):
+            result[x].append(generateNewCell((x, y), board))
+    return result
+   
+def printBoard(board):
+    for x in range(len(board)):
+        line = ''
+        for y in range(len(board[0])):
+            line += str(board[x][y])
+        print(line)
+
     
 class TestNewBoardGeneration(unittest.TestCase):
 
