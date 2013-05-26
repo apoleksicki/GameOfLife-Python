@@ -5,11 +5,6 @@ Created on 23/05/2013
 '''
 import unittest
 
-
-def boardParser(toParse):
-    return toParse.split('\n')
-
-
 class Board(object):
     ALIVE = 1
     DEAD = 0
