@@ -20,7 +20,7 @@ class Board(object):
         cell = self._getCell(point) 
         aliveNeighbors = reduce(lambda x,y: x + y, map(lambda point: self._getCell(point), self._generateNeighborIndex(point)))
         
-        if Board.DEAD == cell:
+        if cell == Board.DEAD:
             if aliveNeighbors == 3:
                 return Board.ALIVE
             else:
@@ -53,12 +53,14 @@ class Board(object):
                 result[x].append(self._generateNewCell((x, y), board))
         return result
        
-    def printBoard(self, board):
-        for x in range(len(board)):
+    def __str__(self):
+        result = ''
+        for x in range(len(self.board)):
             line = ''
-            for y in range(len(board[0])):
-                line += str(board[x][y])
-            print(line)
+            for y in range(len(self.board[0])):
+                line += str(self.board[x][y])
+            result += line
+        return result
     
 
     
