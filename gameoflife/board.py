@@ -16,7 +16,7 @@ class Board(object):
         x, y = point
         return self.board[x][y]
     
-    def _generateNewCell(self, coord, board):
+    def _evolveCell(self, coord, board):
         cell = self._getCell(coord) 
         aliveNeighbors = reduce(lambda x,y: x + y, map(lambda point: self._getCell(point), self._generateNeighborCoords(coord)))
         
@@ -44,13 +44,10 @@ class Board(object):
                         (x + 1, y + 1)]
         return [(x, y) for x, y in allIndices if x >= 0 and x < len(self.board) and y >= 0 and y < len(self.board[0])]
     
-    def generateNewBoard(self, board):
-        result = []
-        for x in range(len(board)):
-            result.append([])
-            for y in range(len(board[0])):
-                result[x].append(self._generateNewCell((x, y), board))
-        return result
+    def evolve(self, board):
+        return [self._evolveCell((x, y), board)
+                for x in range(len(board))
+                for y in range(len(board[0]))]
        
     def __str__(self):
         result = ''
@@ -58,7 +55,7 @@ class Board(object):
             line = ''
             for y in range(len(self.board[0])):
                 line += str(self.board[x][y])
-            result += line
+            result += line + '\n'
         return result
     
 
@@ -69,39 +66,39 @@ class TestNewBoardGeneration(unittest.TestCase):
         board = Board([[0, 1, 0],
                        [0, 1, 0],
                        [0, 1, 0]])
-        self.assertEqual(Board.ALIVE, board._generateNewCell((1,0), board))
-        self.assertEqual(Board.ALIVE, board._generateNewCell((1,2), board))
+        self.assertEqual(Board.ALIVE, board._evolveCell((1,0), board))
+        self.assertEqual(Board.ALIVE, board._evolveCell((1,2), board))
         
     def test_dead_cell_with_two_neigbors_remains_dead(self):
         board = Board([[0, 1, 0],
                        [0, 1, 0],
                        [0, 1, 0]])
-        self.assertEqual(Board.DEAD, board._generateNewCell((0,0), board))
-        self.assertEqual(Board.DEAD, board._generateNewCell((2,0), board))
+        self.assertEqual(Board.DEAD, board._evolveCell((0,0), board))
+        self.assertEqual(Board.DEAD, board._evolveCell((2,0), board))
         
     def test_dead_cell_with_more_three_neighbors_remains_dead(self):
         board = Board([[0, 1, 0, 0],
                        [0, 1, 1, 1],
                        [0, 1, 0, 1]])
-        self.assertEqual(Board.DEAD, board._generateNewCell((2,2), board))
+        self.assertEqual(Board.DEAD, board._evolveCell((2,2), board))
         
     def test_alive_cell_with_two_neigbors_remains_alive(self):
         board = Board([[0, 1, 0],
                        [0, 1, 0],
                        [0, 1, 0]])
-        self.assertEqual(Board.ALIVE, board._generateNewCell((1,1), board))
+        self.assertEqual(Board.ALIVE, board._evolveCell((1,1), board))
 
     def test_alive_cell_with_three_neigbors_remains_alive(self):
         board = Board([[0, 1, 1],
                        [0, 1, 1],
                        [0, 0, 0]])
-        self.assertEqual(Board.ALIVE, board._generateNewCell((1,1), board))
+        self.assertEqual(Board.ALIVE, board._evolveCell((1,1), board))
         
     def test_alive_cell_with_four_neigbors_dies(self):
         board = Board([[0, 1, 1],
                        [1, 1, 1],
                        [1, 0, 0]])
-        self.assertEqual(Board.DEAD, board._generateNewCell((1,1), board))
+        self.assertEqual(Board.DEAD, board._evolveCell((1,1), board))
         
 
 
