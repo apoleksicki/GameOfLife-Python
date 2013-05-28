@@ -12,9 +12,9 @@ class App:
 
         frame = Frame(master)
         frame.pack()
-        self.board = Board([[0, 1, 0],
-                       [0, 1, 0],
-                       [0, 1, 0]])
+        self.board = Board([[0, 1, 0, 0, 0, 1, 1],
+                            [0, 1, 0, 0, 0, 1, 1],
+                            [0, 1, 0, 0, 0, 0, 0]])
         self.text = Text(frame)
         self.text.config(width=10, height = 10)
         self.text.pack()
@@ -28,8 +28,9 @@ class App:
 
     def evolve(self):
         self.board = self.board.evolve()
-        self.text.delete('0.0', '3.3')
-        self.text.insert(INSERT, str(self.board))
+        self.text.delete('0.0', '5.5')
+        self.text.insert('0.0', str(self.board))
+        
 
 
 if __name__ == '__main__':
